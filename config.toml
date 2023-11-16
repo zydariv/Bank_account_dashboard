@@ -1,0 +1,21 @@
+locale="de_DE"
+locale_="de"
+
+[kategorien]
+miete = ['hoos', 'maennlein', 'GWH']
+supermarkt = ['lidl', 'rewe', 'aldi', 'kaufland', 'penny', 'edeka', 'asia', 'rossman', 'ISTANBUL MARKT', 'tegut', 'DROGERIEMARKT', 'Chocoladefabriken Lindt', 'dm-drogerie', 'back']
+baumarkt = ['bauhaus', 'toom', 'obi', 'hornbach']
+möbel = ['ikea', 'otto', 'tk maxx']
+paypal = ['paypal']
+apotheke = ['apotheke']
+abhebungen = ['transact', 'sparkasse', 'deutsche bank', 'Volksbank Pirna eG', 'Landesbank', 'Deutsche Kreditbank Berlin', 'DKB VISACARD', 'spk freibrug', 'Commerzbank', 'Leipziger Volksbank eG']
+energie = ['OCTOPUS ENERGY GMBH', 'Energieversorgung Offenbach AG', 'Energieversorg. Offb. AG']
+cafe = ['cafe', 'coffee', 'HARVEYS', 'L AFRIQUE GMBH', 'Starbucks', 'Waffel House Frankfurt', 'La Luna Offenbach a.M.', 'MEIN LIEBLINGSPLATZ']
+urlaub = ['RatePAY GmbH', 'Frasers Hospitality Lei', 'CASAS Y PALACIOS', 'HYPERION', 'booking']
+umzug = ['Von Ort zu Ort']
+tanken = ['SHELL', 'aral', 'ESSO', 'JET Tankstelle', 'TANKSTELLE']
+essen = ['Takeaway.com', 'BEST WORSCHT', 'Yoko sushi', 'poke you', 'burger king', 'kebab', 'donalds', 'asien palast', 'maloa']
+uber = ['uber']
+netflix = ['NETFLIX.COM']
+bahn = ['DB Vertrieb GmbH']
+campen = ['decathlon']
