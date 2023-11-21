@@ -101,15 +101,20 @@ Ziel des Diagrammes:
 """
 
 saisonal_analysis_helptext = """
+Balkendiagramme mit der Summe aller Ausgaben in 2 Gruppierungen
+1. Nach Wochentagen
+2. Nach Monaten
 
 Das diagram ist interaktiv.
 Hovern für details.
-
 """
 
 uncategorized_helptext = """
+Alle unkategorisierten Ausgaben im ausgewählten Zeitraum ("von"-"bis")
+
+Durch das Anklicken der Spaltennamen, lassen sich diese sortieren.
+"Betrag_absolut" sotiert nach Höhe der Ausgaben
 
 Das diagram ist interaktiv.
 Hovern für details.
-
 """
