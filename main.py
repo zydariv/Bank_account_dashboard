@@ -3,19 +3,23 @@
 from io_utils import *
 from visualization_utils import *
 from data_processing import *
-
+from help_text import *
 import streamlit as st
 from dateutil.relativedelta import relativedelta
 import locale
 
+beschreibung_zeigen = False
 
 st.set_page_config(
     page_title='Finanzdashboard',
     page_icon='📊',
     layout='wide',
-    initial_sidebar_state='collapsed'
+    initial_sidebar_state='expanded'
     )
 
+st.sidebar.header("Einstellungen")
+st.sidebar.markdown("""# :red[**START HERE**] :arrow_down: """)
+st.sidebar.checkbox("Beschreibung", key="beschreibung_zeigen")
 transaction_file ="artificial_max_mustermann.csv"
 config = parse_toml_conf()
 locale.setlocale(locale.LC_ALL, config['locale'])
@@ -27,9 +31,14 @@ transactions_df = preprocess_transactions_df(transactions_df, config)
 index_datum = 'Buchungsdatum'
 umsatztypen = transactions_df['Umsatztyp'].unique()
 
+# Description section
+if st.session_state.beschreibung_zeigen:
+    modal = st.expander("Beschreibung:", expanded=True)
+    modal.markdown(dashboard_helptext)
 
 # Begin Layout
-st.header("Finanz Dashboard", divider=True)
+st.header("Finanz Dashboard", divider=True, help="Für Beschreibung, BESCHREIBUNG in der Seitenleiste aktivieren")
+
 
 # 2 column layout
 col1, col2 = st.columns(2)
@@ -38,7 +47,7 @@ df_ausgaben = filter_df_by_value(df=transactions_df, col='Umsatztyp', value='Aus
 with col1:
     
     
-    st.subheader(f"Ausgaben nach Kategorien")
+    st.subheader(f"Ausgaben nach Kategorien", help=categories_pie_helptext)
     torten_datum = datetime64_to_datetime(df_ausgaben[index_datum].values[0]) - relativedelta(years=1)
     torten_datum = st.date_input("Ausgaben seit:", value=torten_datum)
     mask = df_ausgaben[index_datum] > to_datetime(torten_datum)
@@ -48,12 +57,12 @@ with col1:
     summe = df_ausgaben_torte['Betrag_absolut'].sum()
     st.write(f"\n\nIn diesem Zeitraum wurden {summe}€ ausgegeben.")
 
-    st.subheader(f"Top 10 Ausgaben seit {torten_datum}")
+    st.subheader(f"Top 10 Ausgaben seit {torten_datum}", help=top_ten_helptext)
     df_top_10_ausgaben = df_ausgaben_torte.sort_values(by = ['Betrag_absolut'], ascending=False).head(10)
     st.dataframe(df_top_10_ausgaben)
 
 with col2:
-    st.subheader(f"Einnahmen und Ausgaben")
+    st.subheader(f"Einnahmen und Ausgaben", help=statement_of_costs_helptext)
     frequenzen = {'Wöchentlich': 'W', 'Monatlich': 'M', 'Jährlich': 'Y'}
     frequenz = st.selectbox("Frequenz:", sorted(list(frequenzen.keys())),  index=0)
 
@@ -63,7 +72,7 @@ with col2:
     line_chart_betrag_absolut = aufstellung_bar_chart(resampled_transactions_df[[index_datum, 'Betrag_absolut', 'Umsatztyp']], index_datum, "Betrag_absolut", "Aufstellung")
     st.plotly_chart(line_chart_betrag_absolut, theme="streamlit", use_container_width=True)
 
-    st.subheader("Verteilung der Ausgabenbeträge")
+    st.subheader("Verteilung der Ausgabenbeträge", help=distribution_of_costs_helptext)
     bins = [5,8,13,21,34,55,89,144,233,377,610,987,1597,2000,2500,5000]
     hist_df = cut_in_bins(df_ausgaben, bins)
     hist_df.index.name = "Betragsspanne"
@@ -72,7 +81,7 @@ with col2:
     quantile_25, quantile_75 = df_ausgaben['Betrag_absolut'].quantile([0.25, 0.75])
     df_50_perc = df_ausgaben[(df_ausgaben['Betrag_absolut'] > quantile_25) & (df_ausgaben['Betrag_absolut'] < quantile_75)]
 
-st.subheader("Saisonale Analyse der Ausgaben")
+st.subheader("Saisonale Analyse der Ausgaben", help=saisonal_analysis_helptext)
 
 # 2 Column Layout
 col1_saison, col2_saison = st.columns(2)
@@ -87,7 +96,7 @@ with col2_saison:
     st.plotly_chart(plot, theme="streamlit", use_container_width=True)
 
 st.markdown("***")
-st.subheader("Unkategorisierte Ausgaben")
+st.subheader("Unkategorisierte Ausgaben", help=uncategorized_helptext)
 
 min_date = datetime64_to_datetime(df_ausgaben[index_datum].values[-1])
 max_date = datetime64_to_datetime(df_ausgaben[index_datum].values[0])
