@@ -16,6 +16,7 @@ def add_kategorien(df, config):
    for kategorie in kategorien.keys():
       df = parse_kategorie(df, kategorie, kategorien[kategorie])
    
+   df[['kategorie']] = df[['kategorie']].fillna("Keine Kategorie")
    return df
 
 

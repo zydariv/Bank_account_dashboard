@@ -106,7 +106,7 @@ max_date = st.date_input("bis", max_date)
 mask = (df_ausgaben[index_datum] > to_datetime(min_date)) & (df_ausgaben[index_datum] <= to_datetime(max_date))
 
 df_ausgaben_unbekannt = df_ausgaben.loc[mask]
-df_ausgaben_unbekannt = df_ausgaben_unbekannt[pd.isnull(df_ausgaben['kategorie'])]
+df_ausgaben_unbekannt = df_ausgaben_unbekannt[df_ausgaben_unbekannt['kategorie'] == 'Keine Kategorie']
 st.dataframe(df_ausgaben_unbekannt)
 summe = df_ausgaben_unbekannt['Betrag_absolut'].sum()
 st.write(f"In diesem Zeitraum wurden {summe}€ ausgegeben.")
