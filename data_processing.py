@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+import os
 from datetime import datetime
+from db_access import read_all_transactions, write_transactions, connect_to_db
 
 
 def parse_kategorie(df, kategorie, keywords):
@@ -26,11 +28,70 @@ def add_additional_columns(df, config):
    return df   
 
 
+def create_hash_column(df):
+   df['hash_id'] = (df['Wertstellung'].astype(str) + df['Verwendungszweck']).apply(hash)
+   return df
+
+
+def read_and_write_from_database(db_path, table_name, transactions_df, config):
+   transactions_df = create_hash_column(transactions_df)
+
+   # TODO switch csv to db
+   """
+   # connect to db
+   engine = connect_to_db(db_path)
+   
+   # read already stored data
+   stored_transactions_df = read_all_transactions(table_name, engine)
+   unique_hash_ids = stored_transactions_df['hash_id'].values
+   print(stored_transactions_df)
+
+
+   df2.to_sql(name='users', con=engine, if_exists='append')
+
+   print(transactions_df)
+   # TODO
+   """
+
+   columns_list = transactions_df.columns
+   new_cols = []
+   for col in columns_list:
+      # remove illegal characters
+      col = col.replace('*', '')
+      new_cols.append(col)
+   transactions_df.columns = new_cols
+   
+   transactions_df = transactions_df[list(config['datenbank']['column_mapping'].keys())]
+
+   if os.path.isfile(db_path):
+      stored_transactions_df = pd.read_csv(db_path)
+      stored_hash_ids = set(stored_transactions_df['hash_id'])
+      incoming_hash_ids = set(transactions_df['hash_id'])
+      new_hash_ids = list(incoming_hash_ids - stored_hash_ids)
+      transactions_df = transactions_df[transactions_df['hash_id'] in new_hash_ids]
+      transactions_df = transactions_df[stored_transactions_df['hash_id'] != 0]
+
+   else:
+      #just create file
+      pass
+
+      
+      
+
+   if stored_transactions_df:
+      pass
+      # append
+   else:
+      pass
+      # write
+
+
 def preprocess_transactions_df(transactions_df, config):
    transactions_df.dropna(subset=['Zahlungsempfänger*in'], inplace=True)
    transactions_df.loc[transactions_df['Betrag'] > 0, 'Umsatztyp'] = 'Eingang'
    transactions_df.loc[transactions_df['Betrag'] < 0, 'Umsatztyp'] = 'Ausgang' 
    transactions_df = add_additional_columns(transactions_df, config)
+   transactions_df = read_and_write_from_database(config['datenbank']['path'], config['datenbank']['name'], transactions_df, config)
    return transactions_df
 
 

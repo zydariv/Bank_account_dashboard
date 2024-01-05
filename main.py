@@ -20,7 +20,8 @@ st.set_page_config(
 st.sidebar.header("Einstellungen")
 st.sidebar.markdown("""# :red[**START HERE**] :arrow_down: """)
 st.sidebar.checkbox("Beschreibung", key="beschreibung_zeigen")
-transaction_file ="artificial_max_mustermann.csv"
+transaction_file = "26-11-2023_Umsatzliste_Girokonto_DE95120300001075545481.csv"
+#"artificial_max_mustermann.csv"
 config = parse_toml_conf()
 locale.setlocale(locale.LC_ALL, config['locale'])
 transactions_df = read_transaction_file(transaction_file)

@@ -15,8 +15,8 @@ def parse_dtypes(df):
 @st.cache_data
 def read_transaction_file(transaction_file_name):
     # New format
-    #dateparse = lambda x: datetime.strptime(x, '%d.%m.%y')
-    dateparse = lambda x: datetime.strptime(x, '%d.%m.%Y') # old format
+    dateparse = lambda x: datetime.strptime(x, '%d.%m.%y')
+    #dateparse = lambda x: datetime.strptime(x, '%d.%m.%Y') # old format
     
     raw_transaction_df = pd.read_csv(join("Transactions", transaction_file_name),
                                      sep=";", parse_dates=["Buchungsdatum", "Wertstellung"],

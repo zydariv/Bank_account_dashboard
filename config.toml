@@ -19,3 +19,13 @@ uber = ['uber']
 netflix = ['NETFLIX.COM']
 bahn = ['DB Vertrieb GmbH']
 campen = ['decathlon']
+
+[datenbank]
+path = 'database/transactions.csv'
+name = 'davio'
+[datenbank.column_mapping]
+Buchungsdatum = 'Datum'
+Verwendungszweck = 'Verwendungszweck'
+Zahlungspflichtiger = 'Sender'
+Zahlungsempfängerin = 'Empfänger'
+Betrag = 'Betrag'
